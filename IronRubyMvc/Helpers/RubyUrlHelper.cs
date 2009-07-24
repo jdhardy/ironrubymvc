@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using System.Web.Mvc.IronRuby.Extensions;
+using System.Web.Mvc.Dlr.Extensions;
 using System.Web.Routing;
 using IronRuby.Builtins;
 

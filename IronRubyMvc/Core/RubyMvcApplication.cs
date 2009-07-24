@@ -1,5 +1,7 @@
 #region Usings
 
+using System.Web.Mvc.Dlr.Core;
+
 #endregion
 
 namespace System.Web.Mvc.IronRuby.Core

@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Mvc.IronRuby.Extensions;
+using System.Web.Mvc.Dlr.Extensions;
 
 #endregion
 

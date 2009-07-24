@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Web.Mvc.IronRuby.Extensions;
+using System.Web.Mvc.Dlr.Extensions;
 using System.Web.Routing;
 
 #endregion

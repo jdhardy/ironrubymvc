@@ -19,6 +19,8 @@ using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting.Runtime;
 using DLRConfigSection = Microsoft.Scripting.Hosting.Configuration.Section;
+using System.Web.Mvc.Dlr.Core;
+using System.Web.Mvc.Dlr.Extensions;
 #endregion
 
 namespace System.Web.Mvc.IronRuby.Core

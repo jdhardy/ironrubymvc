@@ -11,6 +11,9 @@ using System.Web.Routing;
 using IronRuby.Builtins;
 using Microsoft.Scripting;
 
+using System.Web.Mvc.Dlr.Core;
+using System.Web.Mvc.Dlr.Extensions;
+
 #endregion
 
 namespace System.Web.Mvc.IronRuby.Controllers

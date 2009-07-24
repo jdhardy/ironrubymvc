@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Web.Mvc.IronRuby.Core;
 using System.Web.Mvc.IronRuby.Extensions;
+using System.Web.Mvc.Dlr.Extensions;
 
 #endregion
 

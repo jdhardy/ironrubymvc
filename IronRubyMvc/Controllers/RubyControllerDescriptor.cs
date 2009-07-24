@@ -3,6 +3,7 @@ extern alias clr3;
 
 using System.Web.Mvc.IronRuby.Core;
 using System.Web.Mvc.IronRuby.Extensions;
+using System.Web.Mvc.Dlr.Extensions;
 using IronRuby.Builtins;
 using clr3::System.Linq;
 #endregion

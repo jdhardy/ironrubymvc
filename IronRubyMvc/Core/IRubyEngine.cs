@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using IronRuby.Builtins;
 using Microsoft.Scripting.Hosting;
+using System.Web.Mvc.Dlr.Core;
 
 #endregion
 

@@ -4,52 +4,23 @@ using System.Web.Mvc.IronRuby.Core;
 using System.Web.Mvc.IronRuby.Extensions;
 using System.Web.Routing;
 using IronRuby.Builtins;
+using System.Web.Mvc.Dlr.Controllers;
+using System.Web.Mvc.Dlr.Core;
+using System.Web.Mvc.Dlr.Extensions;
 
 #endregion
 
 namespace System.Web.Mvc.IronRuby.Controllers
 {
-    public class RubyControllerFactory : IControllerFactory
+    public class RubyControllerFactory : DlrControllerFactory
     {
         private readonly IRubyEngine _engine;
-        private readonly IControllerFactory _innerFactory;
-        private readonly IPathProvider _pathProvider;
 
         public RubyControllerFactory(IPathProvider pathProvider, IControllerFactory innerFactory, IRubyEngine engine)
+            : base(pathProvider, innerFactory)
         {
-            _pathProvider = pathProvider;
-            _innerFactory = innerFactory;
             _engine = engine;
         }
-
-        #region IControllerFactory Members
-
-        public IController CreateController(RequestContext requestContext, string controllerName)
-        {
-            try
-            {
-                return _innerFactory.CreateController(requestContext, controllerName);
-            }
-            catch (InvalidOperationException)
-            {
-            }
-            catch (HttpException)
-            {
-            }
-
-            return LoadController(requestContext, controllerName);
-        }
-
-
-        public void ReleaseController(IController controller)
-        {
-            var disposable = controller as IDisposable;
-
-            if (disposable != null)
-                disposable.Dispose();
-        }
-
-        #endregion
 
         /// <summary>
         /// Loads the controller.
@@ -57,7 +28,7 @@ namespace System.Web.Mvc.IronRuby.Controllers
         /// <param name="requestContext">The request context.</param>
         /// <param name="controllerName">Name of the controller.</param>
         /// <returns></returns>
-        private RubyController LoadController(RequestContext requestContext, string controllerName)
+        protected override IController LoadController(RequestContext requestContext, string controllerName)
         {
             var controllerFilePath = GetControllerFilePath(controllerName);
             var controllerClassName = GetControllerClassName(controllerName);
@@ -75,7 +46,6 @@ namespace System.Web.Mvc.IronRuby.Controllers
             return controller;
         }
 
-
         /// <summary>
         /// Configures the controller.
         /// </summary>
@@ -87,29 +57,6 @@ namespace System.Web.Mvc.IronRuby.Controllers
             var controller = (RubyController)_engine.CreateInstance(rubyClass);
             controller.InternalInitialize(new ControllerConfiguration {Context = requestContext, Engine = _engine, RubyClass = rubyClass});
             return controller;
-        }
-
-        /// <summary>
-        /// Gets the name of the controller class.
-        /// </summary>
-        /// <param name="controllerName">Name of the controller.</param>
-        /// <returns></returns>
-        private static string GetControllerClassName(string controllerName)
-        {
-            return (controllerName.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
-                        ? controllerName
-                        : Constants.ControllerclassFormat.FormattedWith(controllerName)).Pascalize();
-        }
-
-        private string GetControllerFilePath(string controllerName)
-        {
-            var fileName = Constants.ControllerPascalPathFormat.FormattedWith(controllerName.Pascalize());
-            if (_pathProvider.FileExists(fileName))
-                return fileName;
-
-            fileName = Constants.ControllerUnderscorePathFormat.FormattedWith(controllerName.Underscore());
-
-            return _pathProvider.FileExists(fileName) ? fileName : string.Empty;
         }
     }
 }

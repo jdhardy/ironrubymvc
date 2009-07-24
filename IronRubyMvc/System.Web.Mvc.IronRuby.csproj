@@ -104,18 +104,11 @@
     <Compile Include="Controllers\RubyActionSelector.cs" />
     <Compile Include="Controllers\RubyModelBinders.cs" />
     <Compile Include="Controllers\RubyParams.cs" />
-    <Compile Include="Core\AssemblyStreamContentProvider.cs" />
-    <Compile Include="Core\IPathProvider.cs" />
     <Compile Include="Core\IRubyEngine.cs" />
     <Compile Include="Controllers\RubyActionFilter.cs" />
     <Compile Include="Controllers\RubyAuthorizationFilter.cs" />
     <Compile Include="Controllers\RubyExceptionFilter.cs" />
     <Compile Include="Controllers\RubyResultFilter.cs" />
-    <Compile Include="Core\Constants.cs" />
-    <Compile Include="Core\Enums.cs" />
-    <Compile Include="Core\MvcApplication.cs" />
-    <Compile Include="Core\MvcScriptHost.cs" />
-    <Compile Include="Core\PathProviderPAL.cs" />
     <Compile Include="Core\RubyMvcApplication.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -126,15 +119,11 @@
     <Compile Include="Controllers\RubyControllerDescriptor.cs" />
     <Compile Include="Controllers\RubyControllerFactory.cs" />
     <Compile Include="Core\RubyEngine.cs" />
-    <Compile Include="Core\VirtualPathProvider.cs" />
-    <Compile Include="Core\VirtualPathStreamContentProvider.cs" />
     <Compile Include="Extensions\FilterInfoExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\HashWrapper.cs" />
-    <Compile Include="Extensions\Inflector.cs" />
     <Compile Include="Helpers\RubyAjaxHelper.cs" />
     <Compile Include="Helpers\RubyFormHelper.cs" />
     <Compile Include="Helpers\RubyHtmlHelper.cs" />
@@ -165,6 +154,12 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Web.Mvc.Dlr\System.Web.Mvc.Dlr.csproj">
+      <Project>{09BFDD14-D230-44AE-B9D4-4EDD20FAEB60}</Project>
+      <Name>System.Web.Mvc.Dlr</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
