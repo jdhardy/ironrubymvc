@@ -17,7 +17,7 @@ namespace System.Web.Mvc.IronRuby.Controllers
         private readonly IRubyEngine _engine;
 
         public RubyControllerFactory(IPathProvider pathProvider, IControllerFactory innerFactory, IRubyEngine engine)
-            : base(pathProvider, innerFactory)
+            : base(pathProvider, innerFactory, engine)
         {
             _engine = engine;
         }
@@ -35,7 +35,7 @@ namespace System.Web.Mvc.IronRuby.Controllers
 
             _engine.RemoveClassFromGlobals(controllerClassName);
 
-            if (controllerFilePath.IsNullOrBlank())
+            if(controllerFilePath.IsNullOrBlank())
                 return null;
 
             _engine.RequireRubyFile(controllerFilePath, ReaderType.File);

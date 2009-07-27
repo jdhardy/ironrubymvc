@@ -57,7 +57,7 @@ namespace System.Web.Mvc.IronRuby.Core
         {
         }
 
-        private ScriptRuntime Runtime { get; set; }
+        public ScriptRuntime Runtime { get; set; }
 
         /// <summary>
         /// Gets the context.
@@ -69,7 +69,7 @@ namespace System.Web.Mvc.IronRuby.Core
         /// Gets the engine.
         /// </summary>
         /// <value>The engine.</value>
-        private ScriptEngine Engine { get; set; }
+        public ScriptEngine ScriptEngine { get; set; }
 
         /// <summary>
         /// Gets the current scope.
@@ -106,7 +106,7 @@ namespace System.Web.Mvc.IronRuby.Core
         {
             HandleError(() =>
                             {
-                                var scope = Engine.CreateScope();
+                                var scope = ScriptEngine.CreateScope();
                                 block(scope);
                             });
         }
@@ -133,7 +133,7 @@ namespace System.Web.Mvc.IronRuby.Core
             }
             catch (Exception exception)
             {
-                var exceptionService = Engine.GetService<ExceptionOperations>();
+                var exceptionService = ScriptEngine.GetService<ExceptionOperations>();
                 string msg, typeName;
                 exceptionService.GetExceptionMessage(exception, out msg, out typeName);
                 var trace = exceptionService.FormatException(exception);
@@ -151,7 +151,7 @@ namespace System.Web.Mvc.IronRuby.Core
             }
             catch (Exception exception)
             {
-                var exceptionService = Engine.GetService<ExceptionOperations>();
+                var exceptionService = ScriptEngine.GetService<ExceptionOperations>();
                 string msg, typeName;
                 exceptionService.GetExceptionMessage(exception, out msg, out typeName);
                 var trace = exceptionService.FormatException(exception);
@@ -215,7 +215,7 @@ namespace System.Web.Mvc.IronRuby.Core
         /// <returns></returns>
         public object ExecuteScript(string script, ScriptScope scope)
         {
-            return  HandleError(() => Engine.Execute(script, scope ?? CurrentScope));
+            return  HandleError(() => ScriptEngine.Execute(script, scope ?? CurrentScope));
         }
 
 
@@ -228,7 +228,7 @@ namespace System.Web.Mvc.IronRuby.Core
 
             if (!PathProvider.FileExists(path)) return;
 
-            HandleError(() => Engine.ExecuteFile(PathProvider.MapPath(path), CurrentScope));
+            HandleError(() => ScriptEngine.ExecuteFile(PathProvider.MapPath(path), CurrentScope));
         }
 
 
@@ -280,7 +280,7 @@ namespace System.Web.Mvc.IronRuby.Core
         /// <param name="path">The path.</param>
         public void RequireRubyFile(string path)
         {
-            Engine.RequireRubyFile(path);
+            ScriptEngine.RequireRubyFile(path);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace System.Web.Mvc.IronRuby.Core
                                 }
                                 else
                                 {
-                                    Engine.CreateScriptSource(
+                                    ScriptEngine.CreateScriptSource(
                                         new AssemblyStreamContentProvider(path, typeof (IRubyEngine).Assembly), null,
                                         Encoding.ASCII).Execute();
                                 }
@@ -321,14 +321,14 @@ namespace System.Web.Mvc.IronRuby.Core
 
         private void Initialize()
         {
-            Engine = Ruby.GetEngine(Runtime);
-            Context = Ruby.GetExecutionContext(Engine);
-            CurrentScope = Engine.CreateScope();
-            Operations = Engine.CreateOperations();
+            ScriptEngine = Ruby.GetEngine(Runtime);
+            Context = Ruby.GetExecutionContext(ScriptEngine);
+            CurrentScope = ScriptEngine.CreateScope();
+            Operations = ScriptEngine.CreateOperations();
             LoadAssemblies(typeof (object), typeof (Uri), typeof (HttpResponseBase), typeof (MembershipCreateStatus),
                            typeof (RouteTable), typeof (Controller), typeof (RubyController));
             AddLoadPaths();
-            DefineGlobalVariable(Constants.ScriptRuntimeVariable, Engine);
+            DefineGlobalVariable(Constants.ScriptRuntimeVariable, ScriptEngine);
             RequireControllerFile();
             ProcessRubyRoutes();
         }
@@ -336,7 +336,7 @@ namespace System.Web.Mvc.IronRuby.Core
         private void RequireControllerFile()
         {
 //            RequireRubyFile(PathProvider.MapPath("~/Controllers/controller.rb"));
-            Engine.CreateScriptSource(
+            ScriptEngine.CreateScriptSource(
                 new AssemblyStreamContentProvider("System.Web.Mvc.IronRuby.Controllers.controller.rb",
                                                   typeof (IRubyEngine).Assembly), null, Encoding.ASCII).Execute(
                 CurrentScope);
