@@ -14,7 +14,7 @@ namespace System.Web.Mvc.IronRuby.Core
     /// <summary>
     /// A facade over the classes for interacting with the IronRuby runtime
     /// </summary>
-    public interface IRubyEngine : IDlrEngine
+    public interface IRubyEngine : IDlrContext
     {
         /// <summary>
         /// Calls the method.

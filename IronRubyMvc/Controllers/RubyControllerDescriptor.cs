@@ -54,7 +54,7 @@ namespace System.Web.Mvc.IronRuby.Controllers
 
         protected override ActionDescriptor GetActionDescriptor(string actionName)
         {
-            return new RubyActionDescriptor(actionName, this, (IRubyEngine)engine);
+            return new RubyActionDescriptor(actionName, this, (IRubyEngine)context);
         }
     }
 }

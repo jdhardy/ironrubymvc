@@ -3,9 +3,9 @@ using Microsoft.Scripting.Hosting;
 
 namespace System.Web.Mvc.Dlr.Core
 {
-    public abstract class DlrEngine : IDlrEngine
+    public abstract class DlrContext : IDlrContext
     {
-        public DlrEngine(ScriptRuntime runtime, IPathProvider pathProvider, string routesPath)
+        public DlrContext(ScriptRuntime runtime, IPathProvider pathProvider, string routesPath)
         {
             //_routesPath = routesPath;
             Runtime = runtime;
@@ -13,7 +13,7 @@ namespace System.Web.Mvc.Dlr.Core
             //Initialize();
         }
 
-        public DlrEngine(ScriptRuntime runtime, IPathProvider pathProvider)
+        public DlrContext(ScriptRuntime runtime, IPathProvider pathProvider)
             : this(runtime, pathProvider, "~/routes.rb")
         {
         }

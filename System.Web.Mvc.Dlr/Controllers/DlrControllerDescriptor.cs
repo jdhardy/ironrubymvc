@@ -8,12 +8,12 @@ namespace System.Web.Mvc.Dlr.Controllers
 {
     public abstract class DlrControllerDescriptor : ControllerDescriptor
     {
-        protected readonly IDlrEngine engine;
+        protected readonly IDlrContext context;
         protected readonly IActionMethodSelector selector;
 
-        public DlrControllerDescriptor(IDlrEngine engine, IActionMethodSelector selector)
+        public DlrControllerDescriptor(IDlrContext context, IActionMethodSelector selector)
         {
-            this.engine = engine;
+            this.context = context;
             this.selector = selector;
         }
 

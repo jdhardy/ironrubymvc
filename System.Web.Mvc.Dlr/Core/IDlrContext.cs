@@ -6,7 +6,7 @@ using Microsoft.Scripting.Hosting;
 
 namespace System.Web.Mvc.Dlr.Core
 {
-    public interface IDlrEngine
+    public interface IDlrContext
     {
         ScriptRuntime Runtime { get; }
         ScriptEngine ScriptEngine { get; }

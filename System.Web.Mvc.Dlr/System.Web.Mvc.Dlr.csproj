@@ -61,9 +61,9 @@
     <Compile Include="Controllers\IActionMethodSelector.cs" />
     <Compile Include="Core\AssemblyStreamContentProvider.cs" />
     <Compile Include="Core\Constants.cs" />
-    <Compile Include="Core\DlrEngine.cs" />
+    <Compile Include="Core\DlrContext.cs" />
     <Compile Include="Core\Enums.cs" />
-    <Compile Include="Core\IDlrEngine.cs" />
+    <Compile Include="Core\IDlrContext.cs" />
     <Compile Include="Core\IPathProvider.cs" />
     <Compile Include="Core\VirtualPathProvider.cs" />
     <Compile Include="Core\VirtualPathStreamContentProvider.cs" />
