@@ -22,11 +22,11 @@ namespace System.Web.Mvc.IronRuby.Controllers
     public class RubyController : DlrController
     {
         private readonly Dictionary<object, object> _viewData = new Dictionary<object, object>();
-        private IRubyEngine _engine;
         private IDictionary<SymbolId, object> _params;
 
         public string ControllerName { get; internal set; }
-        public RubyClass RubyType { get; private set; }
+        public RubyClass RubyType { get; internal set; }
+        public IRubyEngine RubyContext { get { return (IRubyEngine)DlrContext; } }
 
         public string ControllerClassName
         {
@@ -64,24 +64,24 @@ namespace System.Web.Mvc.IronRuby.Controllers
             
         }
 
-        public void InternalInitialize(ControllerConfiguration config)
+        protected override void Initialize(RequestContext requestContext)
         {
-            Initialize(config.Context);
-            _engine = config.Engine;
-            ControllerName = config.RubyClass.Name.Replace("Controller", string.Empty);
-            RubyType = config.RubyClass;
             Binders = RubyModelBinders.Binders;
+            ControllerName = RubyType.Name.Replace("Controller", string.Empty);
+
+            base.Initialize(requestContext);
         }
 
         protected override void Execute(RequestContext requestContext)
         {
+            Initialize(requestContext);
             PopulateParams();
             base.Execute(requestContext);
         }
 
         protected override IActionInvoker GetActionInvoker()
         {
-            return new RubyControllerActionInvoker(ControllerClassName, _engine);
+            return new RubyControllerActionInvoker(ControllerClassName, RubyContext);
         }
 
         [NonAction]
@@ -180,7 +180,7 @@ namespace System.Web.Mvc.IronRuby.Controllers
             var vdd = new ViewDataDictionary();
 //            vdd["__scriptRuntime"] = ((RubyEngine) _engine).Runtime;
 
-            _engine.CallMethod(this, "fill_view_data");
+            RubyContext.CallMethod(this, "fill_view_data");
             foreach (var entry in _viewData)
                 vdd[Convert.ToString(entry.Key, CultureInfo.InvariantCulture)] = entry.Value;
 

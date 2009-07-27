@@ -9,6 +9,8 @@ namespace System.Web.Mvc.Dlr.Controllers
 {
     public abstract class DlrController : Controller
     {
+        public IDlrContext DlrContext { get; set; }
+
         protected override void Execute(RequestContext requestContext)
         {
             ActionInvoker = GetActionInvoker();

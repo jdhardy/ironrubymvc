@@ -41,21 +41,9 @@ namespace System.Web.Mvc.IronRuby.Controllers
             _engine.RequireRubyFile(controllerFilePath, ReaderType.File);
 
             var controllerClass = _engine.GetRubyClass(controllerClassName);
-            var controller = ConfigureController(controllerClass, requestContext);
+            RubyController controller = (RubyController)base.CreateControllerInstance(controllerClass);
+            controller.RubyType = controllerClass;
 
-            return controller;
-        }
-
-        /// <summary>
-        /// Configures the controller.
-        /// </summary>
-        /// <param name="rubyClass">The ruby class.</param>
-        /// <param name="requestContext">The request context.</param>
-        /// <returns></returns>
-        private RubyController ConfigureController(RubyClass rubyClass, RequestContext requestContext)
-        {
-            var controller = (RubyController)_engine.CreateInstance(rubyClass);
-            controller.InternalInitialize(new ControllerConfiguration {Context = requestContext, Engine = _engine, RubyClass = rubyClass});
             return controller;
         }
     }

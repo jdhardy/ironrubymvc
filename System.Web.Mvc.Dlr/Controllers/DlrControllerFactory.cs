@@ -11,13 +11,13 @@ namespace System.Web.Mvc.Dlr.Controllers
     {
         private readonly IControllerFactory innerFactory;
         private readonly IPathProvider pathProvider;
-        protected readonly IDlrContext context;
+        protected readonly IDlrContext dlrContext;
 
-        public DlrControllerFactory(IPathProvider pathProvider, IControllerFactory innerFactory, IDlrContext context)
+        public DlrControllerFactory(IPathProvider pathProvider, IControllerFactory innerFactory, IDlrContext dlrContext)
         {
             this.pathProvider = pathProvider;
             this.innerFactory = innerFactory;
-            this.context = context;
+            this.dlrContext = dlrContext;
         }
 
         #region IControllerFactory Members
@@ -63,7 +63,7 @@ namespace System.Web.Mvc.Dlr.Controllers
             if(controllerFilePath.IsNullOrBlank())
                 return null;
 
-            ScriptScope scope = context.ScriptEngine.ExecuteFile(requestContext.HttpContext.Server.MapPath(controllerFilePath));
+            ScriptScope scope = dlrContext.ScriptEngine.ExecuteFile(requestContext.HttpContext.Server.MapPath(controllerFilePath));
             
             object controllerClass;
             return scope.TryGetVariable(controllerClassName, out controllerClass) ?
@@ -78,7 +78,10 @@ namespace System.Web.Mvc.Dlr.Controllers
         /// <returns></returns>
         protected virtual IController CreateControllerInstance(object controllerClass)
         {
-            return (IController)context.ScriptEngine.Operations.CreateInstance(controllerClass);
+            DlrController controller = (DlrController)dlrContext.ScriptEngine.Operations.CreateInstance(controllerClass);
+            controller.DlrContext = dlrContext;
+
+            return controller;
         }
 
         /// <summary>
@@ -115,7 +118,7 @@ namespace System.Web.Mvc.Dlr.Controllers
         /// <returns>Enumerable of possible controller paths.</returns>
         protected virtual IEnumerable<string> GetPossibleControllerPaths(string controllerName)
         {
-            foreach(string ext in context.ScriptEngine.Setup.FileExtensions)
+            foreach(string ext in dlrContext.ScriptEngine.Setup.FileExtensions)
                 yield return "~/Controllers/{0}Controller{1}".FormattedWith(controllerName.Pascalize(), ext.StartsWith(".") ? ext : "." + ext);
         }
 
