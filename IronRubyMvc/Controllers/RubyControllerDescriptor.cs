@@ -6,6 +6,7 @@ using System.Web.Mvc.IronRuby.Extensions;
 using System.Web.Mvc.Dlr.Extensions;
 using IronRuby.Builtins;
 using clr3::System.Linq;
+using System.Web.Mvc.Dlr.Controllers;
 #endregion
 
 namespace System.Web.Mvc.IronRuby.Controllers
@@ -13,21 +14,17 @@ namespace System.Web.Mvc.IronRuby.Controllers
     /// <summary>
     /// The descriptor for a Ruby enabled Controller
     /// </summary>
-    public class RubyControllerDescriptor : ControllerDescriptor
+    public class RubyControllerDescriptor : DlrControllerDescriptor
     {
-        private readonly IRubyEngine _engine;
-        private readonly RubyActionMethodSelector _selector;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RubyControllerDescriptor"/> class.
         /// </summary>
         /// <param name="rubyClass">The ruby class.</param>
         /// <param name="engine">The engine.</param>
         public RubyControllerDescriptor(RubyClass rubyClass, IRubyEngine engine)
+            : base(engine, new RubyActionMethodSelector(engine, rubyClass))
         {
-            _engine = engine;
             RubyControllerClass = rubyClass;
-            _selector = new RubyActionMethodSelector(engine, rubyClass);
         }
 
         /// <summary>
@@ -55,30 +52,9 @@ namespace System.Web.Mvc.IronRuby.Controllers
         /// <value>The ruby controller class.</value>
         public RubyClass RubyControllerClass { get; private set; }
 
-        /// <summary>
-        /// Finds the action.
-        /// </summary>
-        /// <param name="controllerContext">The controller context.</param>
-        /// <param name="actionName">The name of the action.</param>
-        /// <returns>The information about the action.</returns>
-        public override ActionDescriptor FindAction(ControllerContext controllerContext, string actionName)
+        protected override ActionDescriptor GetActionDescriptor(string actionName)
         {
-            controllerContext.EnsureArgumentNotNull("controllerContext");
-            actionName.EnsureArgumentNotNull("actionName");
-
-            var selectedName = _selector.FindActionMethod(controllerContext, actionName);
-            return selectedName.IsNotNullOrBlank() ? new RubyActionDescriptor(selectedName, this, _engine) : null;
-        }
-
-        /// <summary>
-        /// Gets the canonical actions.
-        /// </summary>
-        /// <returns>
-        /// A list of action descriptors for the controller.
-        /// </returns>
-        public override ActionDescriptor[] GetCanonicalActions()
-        {
-            return _selector.GetAllActionMethods().Map(method => new RubyActionDescriptor(method, this, _engine)).ToArray();
+            return new RubyActionDescriptor(actionName, this, (IRubyEngine)engine);
         }
     }
 }

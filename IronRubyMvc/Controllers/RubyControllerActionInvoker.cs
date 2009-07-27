@@ -4,6 +4,7 @@ using System.Web.Mvc.IronRuby.Core;
 using System.Web.Mvc.IronRuby.Extensions;
 using System.Web.Mvc.Dlr.Extensions;
 using IronRuby.Builtins;
+using System.Web.Mvc.Dlr.Controllers;
 
 #endregion
 

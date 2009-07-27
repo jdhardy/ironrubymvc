@@ -13,12 +13,13 @@ using Microsoft.Scripting;
 
 using System.Web.Mvc.Dlr.Core;
 using System.Web.Mvc.Dlr.Extensions;
+using System.Web.Mvc.Dlr.Controllers;
 
 #endregion
 
 namespace System.Web.Mvc.IronRuby.Controllers
 {
-    public class RubyController : Controller
+    public class RubyController : DlrController
     {
         private readonly Dictionary<object, object> _viewData = new Dictionary<object, object>();
         private IRubyEngine _engine;
@@ -75,8 +76,12 @@ namespace System.Web.Mvc.IronRuby.Controllers
         protected override void Execute(RequestContext requestContext)
         {
             PopulateParams();
-            ActionInvoker = new RubyControllerActionInvoker(ControllerClassName, _engine);
             base.Execute(requestContext);
+        }
+
+        protected override IActionInvoker GetActionInvoker()
+        {
+            return new RubyControllerActionInvoker(ControllerClassName, _engine);
         }
 
         [NonAction]

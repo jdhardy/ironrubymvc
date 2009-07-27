@@ -8,6 +8,7 @@ using System.Web.Mvc.IronRuby.Core;
 using System.Web.Mvc.IronRuby.Extensions;
 using System.Web.Mvc.Dlr.Extensions;
 using IronRuby.Builtins;
+using System.Web.Mvc.Dlr.Controllers;
 
 using clr3::System.Linq;
 
@@ -18,7 +19,7 @@ namespace System.Web.Mvc.IronRuby.Controllers
     /// <summary>
     /// Encapsulates selecting action methods on a ruby controller
     /// </summary>
-    public class RubyActionMethodSelector
+    public class RubyActionMethodSelector : IActionMethodSelector
     {
         private readonly IRubyEngine _rubyEngine;
 

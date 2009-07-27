@@ -55,7 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DlrController.cs" />
+    <Compile Include="Controllers\DlrControllerDescriptor.cs" />
     <Compile Include="Controllers\DlrControllerFactory.cs" />
+    <Compile Include="Controllers\IActionMethodSelector.cs" />
     <Compile Include="Core\AssemblyStreamContentProvider.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\DlrEngine.cs" />
