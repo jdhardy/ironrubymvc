@@ -44,12 +44,6 @@ namespace System.Web.Mvc.IronRuby.Controllers
             return new RubyControllerDescriptor(rubyController.RubyType, RubyEngine);
         }
 
-        protected override ActionDescriptor FindAction(ControllerContext controllerContext,
-                                                       ControllerDescriptor controllerDescriptor, string actionName)
-        {
-            return controllerDescriptor.FindAction(controllerContext, actionName);
-        }
-
         protected override FilterInfo GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
         {
             var rubyType = ((RubyController) controllerContext.Controller).RubyType;
